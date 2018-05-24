@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+int separa(float x,float *a){
+  *a = x - (int)x;
+  return (int)x;
+}
+float convertedec(int numero,int base){
+  int i,j=0,v[i],soma=0;
+  for(i=1;numero>0;i++){
+    v[i] = numero%10;
+    numero = numero/10;
+    j++;
+    printf("%d\n",v[i]);
+  }
+  for(i=1;i<=j;i++){
+    soma += v[i]*pow(base,i-1);
+  }
+  return soma;
+}
+void converteb2(int num10,int b2){
+  int i,j=0,v[1000],v1[10000];
+  for(i=1;num10>0;i++){
+    v[i] = num10%b2;
+    num10 = num10/b2;
+    j++;
+  }
+  for(i=0,j=j;j>=0;i++,j--){
+    v[j]=v1[i];
+    printf("%d ",v1[i]);
+  }
+  printf("\n");
+}
+
+int main(void){
+  int inteira,base1,base2;
+  float num,fra,convertido;
+  printf("Digite um número\n");
+  scanf("%f",&num);
+  printf("Digite a base que o número está\n");
+  scanf("%d",&base1);
+  printf("Digite em que base quer\n");
+  scanf("%d",&base2);
+  inteira = separa(num,&fra);
+  convertido = convertedec(inteira,base1);
+  printf("Convertido: %.2f\n",convertido);
+
+}
