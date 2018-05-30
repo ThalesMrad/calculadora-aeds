@@ -1,0 +1,122 @@
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+int transforma_char_em_numero(char elemento){
+  if(elemento>=48 &&elemento<=57){
+    elemento = elemento - 48;
+  }
+  switch (elemento){
+  case 'A':
+  elemento = 10;
+  break;
+  case 'B':
+  elemento = 11;
+  break;
+  case 'C':
+  elemento = 12;
+  break;
+  case 'D':
+  elemento = 13;
+  break;
+  case 'E':
+  elemento = 14;
+  break;
+  case 'F':
+  elemento = 15;
+  break;
+ }
+ return elemento;
+}
+float converte_dec_parte_inteira(int numero,int base){
+  int i,j=0,v[100],soma=0;
+  for(i=1;numero>0;i++){
+    v[i] = numero%10;
+    numero = numero/10;
+    j++;
+  }
+  for(i=1;i<=j;i++){
+    soma += v[i]*pow(base,i-1);
+  }
+  return soma;
+}
+float parte_inteira_em_decimal_base_hex(int *numero,int limite,int base1){
+   int i,soma=0,j=0;
+     for(i=limite;i>=1;i--){
+       soma += numero[i]*pow(base1,j);
+       j++;
+     }
+  return soma; 
+}
+float converte_dec_parte_fra(int *numero,int controle_depois,int controle_antes,int base1){
+  int i,j=-1;
+  float somatorio=0;
+  for(i=controle_antes+2;i<=controle_antes+controle_depois+1;i++){
+    somatorio += numero[i] * pow(base1,j);
+    j--;
+  }
+  return somatorio;
+}
+float converte_parte_inteira_para_b2(int parte_inteira,int base2){
+  int i,j,limite=0,vetor[100];
+  float parte_inteira_na_base2=0;
+  for(i=0;parte_inteira>=base2;i++){
+    vetor[i] = parte_inteira%base2;
+    parte_inteira = parte_inteira/base2;
+    limite++;
+  }
+  vetor[i] = parte_inteira;
+  for(j=0,i=i;j<=limite;j++,i--){
+    parte_inteira_na_base2 += vetor[i]*pow(10,i);
+  }
+  return parte_inteira_na_base2;
+}
+int main(){
+	int base1,base2,numero[51];
+	char numero_em_forma_de_string[51];
+ 
+ 	printf("Conversor de bases\n");
+	printf("Digite o número que quer converter, a base que está e a base destino respectivamente\n");
+	scanf("%s %d %d",numero_em_forma_de_string,&base1,&base2);
+	
+	int i,controle_antes=0,controle_depois=0,ponto=0;
+	
+	for (i=0;numero_em_forma_de_string[i]!='\0';i++){
+		if(i!=0 && numero_em_forma_de_string[i]!='.'){
+		numero[i]= transforma_char_em_numero(numero_em_forma_de_string[i]);
+		//printf("numero: %d\n",numero[i]);
+	 }
+	    if(numero_em_forma_de_string[i]=='.')
+	      ponto = 1;
+	    if(ponto == 1)
+	      controle_depois++;
+	    if(ponto == 0)
+	      controle_antes++;
+	}
+	controle_antes--;
+	controle_depois--;
+
+	int parte_inteira=0;
+	float parte_inteira_em_decimal;
+	
+	if(base1!=16){
+	  for(i=1;i<=controle_antes;i++){
+	  	parte_inteira += numero[i]*pow(10,controle_antes-i);	   
+	  }
+	parte_inteira_em_decimal = converte_dec_parte_inteira(parte_inteira,base1);
+	//printf("parte inteira em dec: %.2f\n",parte_inteira_em_decimal);
+    }else{
+    parte_inteira_em_decimal = parte_inteira_em_decimal_base_hex(&numero,controle_antes,base1);
+	printf("parte inteira em dec: %.2f\n",parte_inteira_em_decimal);	
+	}
+    
+    float parte_fracionaria;
+    parte_fracionaria = converte_dec_parte_fra(numero,controle_depois,controle_antes,base1);
+    printf("\n Parte fracionaria em dec: %f",parte_fracionaria);
+    
+    float parte_inteira_convertida;
+    if(base2!=16){
+    parte_inteira_convertida = converte_parte_inteira_para_b2(parte_inteira_em_decimal,base2);
+    printf("\n Parte inteira convertida: %f",parte_inteira_convertida);
+  }
+}
