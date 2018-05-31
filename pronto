@@ -187,6 +187,10 @@ int main(){
 	for (i=0;numero_em_forma_de_string[i]!='\0';i++){
 		if(i!=0 && numero_em_forma_de_string[i]!='.'){
 		numero[i]= transforma_char_em_numero(numero_em_forma_de_string[i]);
+		if(numero[i]>=base1){
+			printf("Número inválido\n");
+			return 0;
+		}
 	 }
 	    if(numero_em_forma_de_string[i]=='.')
 	      ponto = 1;
@@ -235,7 +239,7 @@ int main(){
 	}else{
 		converte_parte_fra_para_b2_16(parte_fracionaria,base2);
 	}
-	
+	printf("\n");
     
     return 0;
 }
